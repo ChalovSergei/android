@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item
+        android:id="@+id/incomeFragment"
+        android:title="Доходы"
+        android:icon="@drawable/ic_baseline_attach_money_24"/>
+    <item
+        android:id="@+id/expensesFragment"
+        android:title="Расходы"
+        android:icon="@drawable/ic_baseline_money_off_24"/>
+    <item
+        android:id="@+id/planningFragment"
+        android:title="Планирование"
+        android:icon="@drawable/ic_baseline_access_time_24"/>
+    <item
+        android:id="@+id/graphicAnalysisFragment"
+        android:title="Анализ"
+        android:icon="@drawable/ic_baseline_poll_24"/>
+
+
+</menu>

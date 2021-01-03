@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav"
+    app:startDestination="@id/incomeFragment">
+
+    <fragment
+        android:id="@+id/incomeFragment"
+        android:name="com.example.o.IncomeFragment"
+        android:label="fragment_income"
+        tools:layout="@layout/fragment_income" />
+    <fragment
+        android:id="@+id/expensesFragment"
+        android:name="com.example.o.ExpensesFragment"
+        android:label="fragment_expenses"
+        tools:layout="@layout/fragment_expenses" />
+    <fragment
+        android:id="@+id/graphicAnalysisFragment"
+        android:name="com.example.o.GraphicAnalysisFragment"
+        android:label="fragment_graphic_analysis"
+        tools:layout="@layout/fragment_graphic_analysis" />
+    <fragment
+        android:id="@+id/planningFragment"
+        android:name="com.example.o.PlanningFragment"
+        android:label="fragment_planning"
+        tools:layout="@layout/fragment_planning" />
+    <fragment
+        android:id="@+id/categoriesFragment"
+        android:name="com.example.o.CategoriesFragment"
+        android:label="fragment_categories"
+        tools:layout="@layout/fragment_categories" />
+</navigation>
