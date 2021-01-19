@@ -23,8 +23,8 @@
         app:menu="@menu/bottom_menu" />
 
     <fragment
-        android:id="@+id/fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
+        android:id="@+id/fragment"
         android:layout_width="411dp"
         android:layout_height="688dp"
         app:defaultNavHost="true"

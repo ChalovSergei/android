@@ -2,27 +2,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/spinnerIncome"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".IncomeFragment">
-
-    <TextView
-        android:id="@+id/etInputField"
-        android:layout_width="304dp"
-        android:layout_height="34dp"
-        android:layout_gravity="bottom"
-        android:layout_marginStart="53dp"
-        android:layout_marginEnd="54dp"
-        android:layout_marginBottom="604dp"
-        android:background="@drawable/textview_border"
-        android:text=""
-        android:textAlignment="center"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btnFive"
@@ -31,7 +13,7 @@
         android:layout_gravity="bottom"
         android:layout_marginStart="197dp"
         android:layout_marginEnd="134dp"
-        android:layout_marginBottom="476dp"
+        android:layout_marginBottom="468dp"
         android:text="5"
         android:textAlignment="center"
         android:textSize="36sp"
@@ -41,129 +23,31 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/btnOne"
-        android:layout_width="80dp"
-        android:layout_height="66dp"
-        android:layout_gravity="bottom"
-        android:layout_marginStart="117dp"
-        android:layout_marginEnd="214dp"
-        android:layout_marginBottom="536dp"
-        android:text="1"
-        android:textAlignment="center"
-        android:textSize="36sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/btnSubtraction"
-        android:layout_width="65dp"
-        android:layout_height="66dp"
-        android:layout_gravity="bottom"
-        android:layout_marginStart="52dp"
-        android:layout_marginEnd="294dp"
-        android:layout_marginBottom="476dp"
-        android:text="−"
-        android:textSize="36sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/btnAddition"
-        android:layout_width="65dp"
-        android:layout_height="66dp"
-        android:layout_gravity="bottom"
-        android:layout_marginStart="52dp"
-        android:layout_marginEnd="294dp"
-        android:layout_marginBottom="536dp"
-        android:text="+"
-        android:textAlignment="center"
-        android:textSize="36sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/btnNine"
-        android:layout_width="80dp"
-        android:layout_height="66dp"
-        android:layout_gravity="bottom"
-        android:layout_marginStart="277dp"
-        android:layout_marginEnd="54dp"
-        android:layout_marginBottom="416dp"
-        android:text="9"
-        android:textAlignment="center"
-        android:textSize="36sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/btnDivision"
-        android:layout_width="65dp"
-        android:layout_height="66dp"
-        android:layout_gravity="bottom"
-        android:layout_marginStart="52dp"
-        android:layout_marginEnd="294dp"
-        android:layout_marginBottom="356dp"
-        android:text="÷"
-        android:textSize="36sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/btnTwo"
-        android:layout_width="80dp"
-        android:layout_height="66dp"
-        android:layout_gravity="bottom"
-        android:layout_marginStart="197dp"
-        android:layout_marginEnd="134dp"
-        android:layout_marginBottom="536dp"
-        android:text="2"
-        android:textAlignment="center"
-        android:textSize="36sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/btnSeven"
-        android:layout_width="80dp"
-        android:layout_height="66dp"
-        android:layout_gravity="bottom"
-        android:layout_marginStart="117dp"
-        android:layout_marginEnd="214dp"
-        android:layout_marginBottom="416dp"
-        android:text="7"
-        android:textAlignment="center"
-        android:textSize="36sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
         android:id="@+id/btnFour"
         android:layout_width="80dp"
         android:layout_height="66dp"
         android:layout_gravity="bottom"
         android:layout_marginStart="117dp"
         android:layout_marginEnd="214dp"
-        android:layout_marginBottom="476dp"
+        android:layout_marginBottom="468dp"
         android:text="4"
         android:textAlignment="center"
         android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageButton
+        android:id="@+id/btnClearInputField"
+        android:layout_width="47dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginBottom="596dp"
+        android:src="@drawable/ic_baseline_clear_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.844"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
@@ -173,55 +57,8 @@
         android:layout_gravity="bottom"
         android:layout_marginStart="197dp"
         android:layout_marginEnd="134dp"
-        android:layout_marginBottom="416dp"
+        android:layout_marginBottom="404dp"
         android:text="8"
-        android:textAlignment="center"
-        android:textSize="36sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/btnMultiplication"
-        android:layout_width="65dp"
-        android:layout_height="66dp"
-        android:layout_gravity="bottom"
-        android:layout_marginStart="52dp"
-        android:layout_marginEnd="294dp"
-        android:layout_marginBottom="416dp"
-        android:text="×"
-        android:textSize="36sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/btnThree"
-        android:layout_width="80dp"
-        android:layout_height="66dp"
-        android:layout_gravity="bottom"
-        android:layout_marginStart="277dp"
-        android:layout_marginEnd="54dp"
-        android:layout_marginBottom="536dp"
-        android:text="3"
-        android:textAlignment="center"
-        android:textSize="36sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/btnDecimal"
-        android:layout_width="80dp"
-        android:layout_height="66dp"
-        android:layout_gravity="bottom"
-        android:layout_marginStart="117dp"
-        android:layout_marginEnd="214dp"
-        android:layout_marginBottom="356dp"
-        android:text="."
         android:textAlignment="center"
         android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -236,8 +73,87 @@
         android:layout_gravity="bottom"
         android:layout_marginStart="277dp"
         android:layout_marginEnd="54dp"
-        android:layout_marginBottom="356dp"
+        android:layout_marginBottom="340dp"
         android:text="⌫"
+        android:textAlignment="center"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tvMoney"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="208dp"
+        android:layout_marginEnd="190dp"
+        android:layout_marginBottom="632dp"
+        android:text="0"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnDecimal"
+        android:layout_width="80dp"
+        android:layout_height="66dp"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="117dp"
+        android:layout_marginEnd="214dp"
+        android:layout_marginBottom="340dp"
+        android:text="."
+        android:textAlignment="center"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnNine"
+        android:layout_width="80dp"
+        android:layout_height="66dp"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="277dp"
+        android:layout_marginEnd="54dp"
+        android:layout_marginBottom="404dp"
+        android:text="9"
+        android:textAlignment="center"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnThree"
+        android:layout_width="80dp"
+        android:layout_height="66dp"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="277dp"
+        android:layout_marginEnd="54dp"
+        android:layout_marginBottom="532dp"
+        android:text="3"
+        android:textAlignment="center"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnTwo"
+        android:layout_width="80dp"
+        android:layout_height="66dp"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="197dp"
+        android:layout_marginEnd="134dp"
+        android:layout_marginBottom="532dp"
+        android:text="2"
         android:textAlignment="center"
         android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -252,13 +168,61 @@
         android:layout_gravity="bottom"
         android:layout_marginStart="277dp"
         android:layout_marginEnd="54dp"
-        android:layout_marginBottom="476dp"
+        android:layout_marginBottom="468dp"
         android:text="6"
         android:textAlignment="center"
         android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tvCurrentMoney"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="165dp"
+        android:layout_marginEnd="145dp"
+        android:layout_marginBottom="668dp"
+        android:text="Мои деньги"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnSeven"
+        android:layout_width="80dp"
+        android:layout_height="66dp"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="117dp"
+        android:layout_marginEnd="214dp"
+        android:layout_marginBottom="404dp"
+        android:text="7"
+        android:textAlignment="center"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/etInputField"
+        android:layout_width="187dp"
+        android:layout_height="33dp"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="53dp"
+        android:layout_marginEnd="54dp"
+        android:layout_marginBottom="596dp"
+        android:background="@drawable/textview_border"
+        android:text=""
+        android:textAlignment="center"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.564"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
@@ -268,7 +232,7 @@
         android:layout_gravity="bottom"
         android:layout_marginStart="197dp"
         android:layout_marginEnd="134dp"
-        android:layout_marginBottom="356dp"
+        android:layout_marginBottom="340dp"
         android:text="0"
         android:textAlignment="center"
         android:textSize="36sp"
@@ -277,58 +241,63 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/tvMoney"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <Button
+        android:id="@+id/btnOne"
+        android:layout_width="80dp"
+        android:layout_height="66dp"
         android:layout_gravity="bottom"
-        android:layout_marginStart="197dp"
-        android:layout_marginEnd="201dp"
-        android:layout_marginBottom="640dp"
-        android:text="0"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginStart="156dp"
-        android:layout_marginEnd="156dp"
-        android:layout_marginBottom="668dp"
-        android:text="Мои деньги"
-        android:textSize="18sp"
+        android:layout_marginStart="117dp"
+        android:layout_marginEnd="214dp"
+        android:layout_marginBottom="532dp"
+        android:text="1"
+        android:textAlignment="center"
+        android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Spinner
-        android:id="@+id/spinner2"
-        android:layout_width="409dp"
-        android:layout_height="wrap_content"
+        android:id="@+id/spinnerIncome"
+        android:layout_width="408dp"
+        android:layout_height="41dp"
         android:layout_marginStart="1dp"
         android:layout_marginEnd="1dp"
-        android:layout_marginBottom="332dp"
+        android:layout_marginBottom="296dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="180dp"
-        android:clickable="true"
-        android:src="@drawable/ic_baseline_add_circle_outline_24"
+    <EditText
+        android:id="@+id/etCategory"
+        android:layout_width="174dp"
+        android:layout_height="49dp"
+        android:layout_marginBottom="236dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.997"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tvTextIncome"
+        android:layout_width="98dp"
+        android:layout_height="32dp"
+        android:layout_marginBottom="504dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnAddInfo"
+        android:layout_width="99dp"
+        android:layout_height="65dp"
+        android:layout_marginBottom="440dp"
+        android:text="Добавить"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.051"
         app:layout_constraintStart_toStartOf="parent" />
 
 

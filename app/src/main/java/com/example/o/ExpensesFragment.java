@@ -1,5 +1,8 @@
 package com.example.o;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,132 +11,115 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ExpensesFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class ExpensesFragment extends Fragment implements View.OnClickListener{
-    Button btnAddition;
     Button btnOne;
     Button btnTwo;
     Button btnThree;
-    Button btnSubtraction;
     Button btnFour;
     Button btnFive;
     Button btnSix;
-    Button btnMultiplication;
     Button btnSeven;
     Button btnEight;
     Button btnNine;
-    Button btnDivision;
     Button btnDecimal;
     Button btnZero;
     Button btnRemove;
     TextView tvMoney;
     TextView etInputField;
+    ImageButton btnClearInputField;
+    Spinner spinnerIncome;
+    EditText etCategory;
+    DBHelper dbHelper;
+    TextView tvCurrentMoney;
+    TextView tvTextIncome;
+    String[] spinnerIncomeArray = {"Еда","Сотовая связь","Интернет","Одежда","Спорт", "Досуг", "Авто", "Дом", "Обеды"};
+    Button btnAddIncomeTest;
 
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public ExpensesFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ExpensesFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ExpensesFragment newInstance(String param1, String param2) {
-        ExpensesFragment fragment = new ExpensesFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_expenses, container, false);
-        btnAddition = rootView.findViewById(R.id.btnAddition);
         btnOne = rootView.findViewById(R.id.btnOne);
         btnTwo = rootView.findViewById(R.id.btnTwo);
         btnThree = rootView.findViewById(R.id.btnThree);
-        btnSubtraction = rootView.findViewById(R.id.btnSubtraction);
         btnFour = rootView.findViewById(R.id.btnFour);
         btnFive = rootView.findViewById(R.id.btnFive);
         btnSix = rootView.findViewById(R.id.btnSix);
-        btnMultiplication = rootView.findViewById(R.id.btnMultiplication);
         btnSeven = rootView.findViewById(R.id.btnSeven);
         btnEight = rootView.findViewById(R.id.btnEight);
         btnNine = rootView.findViewById(R.id.btnNine);
-        btnDivision = rootView.findViewById(R.id.btnDivision);
+        btnAddIncomeTest = rootView.findViewById(R.id.btnAddInfo);
+
         btnDecimal = rootView.findViewById(R.id.btnDecimal);
         btnZero = rootView.findViewById(R.id.btnZero);
         btnRemove = rootView.findViewById(R.id.btnRemove);
+        btnClearInputField = rootView.findViewById(R.id.btnClearInputField);
         tvMoney = rootView.findViewById(R.id.tvMoney);
         etInputField = rootView.findViewById(R.id.etInputField);
+        spinnerIncome = rootView.findViewById(R.id.spinnerIncome);
+        etCategory = rootView.findViewById(R.id.etCategory);
+        tvCurrentMoney = rootView.findViewById(R.id.tvCurrentMoney);
+        tvTextIncome = rootView.findViewById(R.id.tvTextIncome);
 
-
-
-
-        btnAddition.setOnClickListener(this);
+        btnAddIncomeTest.setOnClickListener(this);
+        btnClearInputField.setOnClickListener(this);
         btnOne.setOnClickListener(this);
         btnTwo.setOnClickListener(this);
         btnThree.setOnClickListener(this);
-        btnSubtraction.setOnClickListener(this);
         btnFour.setOnClickListener(this);
         btnFive.setOnClickListener(this);
         btnSix.setOnClickListener(this);
-        btnMultiplication.setOnClickListener(this);
         btnSeven.setOnClickListener(this);
         btnEight.setOnClickListener(this);
         btnNine.setOnClickListener(this);
-        btnDivision.setOnClickListener(this);
         btnDecimal.setOnClickListener(this);
         btnZero.setOnClickListener(this);
         btnRemove.setOnClickListener(this);
+        dbHelper = new DBHelper(getActivity());
+        tvMoney.setText(GetValueMoney());
+        tvTextIncome.setVisibility(View.GONE);
+        ArrayAdapter<String> spinnerIncomeAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, spinnerIncomeArray);
+        spinnerIncomeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        spinnerIncome.setAdapter(spinnerIncomeAdapter);
+        spinnerIncome.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                tvTextIncome.setText(parent.getSelectedItem().toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         return rootView;
     }
+
+
     public void onClick(View view) {
         switch (view.getId())
         {
-            case R.id.btnAddition:
-                break;
-            case R.id.btnSubtraction:
-                break;
-            case R.id.btnMultiplication:
-                break;
-            case R.id.btnDivision:
-                break;
             case R.id.btnDecimal:
                 if(etInputField.getText().equals("")){
                     etInputField.setText("0.");
@@ -141,7 +127,6 @@ public class ExpensesFragment extends Fragment implements View.OnClickListener{
                 else if(etInputField.getText() != ""){
                     etInputField.setText(etInputField.getText()+".");
                 }
-
                 break;
             case R.id.btnRemove:
                 String newStr = (String) etInputField.getText();
@@ -224,6 +209,55 @@ public class ExpensesFragment extends Fragment implements View.OnClickListener{
                     etInputField.setText(etInputField.getText()+"9");
                 }
                 break;
+            case R.id.btnClearInputField:
+                etInputField.setText("");
+                break;
+            case R.id.btnAddInfo:
+                Date currentDate = new Date();
+                DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+                String dateText = dateFormat.format(currentDate);
+
+                if(etCategory.getText().equals("")){
+                    UpdateMoney(Integer.parseInt(tvMoney.getText().toString()) - Integer.parseInt(etInputField.getText().toString()));
+                    InsertExpenses(tvTextIncome.getText().toString(), Integer.parseInt(etInputField.getText().toString()), dateText);
+                    tvMoney.setText(GetValueMoney());
+                    etInputField.setText("");
+                }
+                else{
+                    UpdateMoney(Integer.parseInt(tvMoney.getText().toString()) - Integer.parseInt(etInputField.getText().toString()));
+                    InsertExpenses(etCategory.getText().toString(), Integer.parseInt(etInputField.getText().toString()), dateText);
+                    tvMoney.setText(GetValueMoney());
+                    etInputField.setText("");
+                    etCategory.setText("");
+                }
+                break;
         }
+    }
+    public void InsertExpenses(String category, int money, String date){
+        SQLiteDatabase database = dbHelper.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(dbHelper.KEY_CATEGORY, category);
+        contentValues.put(dbHelper.KEY_MONEY, money);
+        contentValues.put(dbHelper.KEY_DATE, date);
+
+        database.insert(dbHelper.TABLE_EXPENSES, null, contentValues);
+        database.close();
+    }
+    public String GetValueMoney(){
+        SQLiteDatabase database = dbHelper.getWritableDatabase();
+        Cursor cursor = database.query(DBHelper.TABLE_FINANCE, null,
+                null, null, null, null, null);
+        if(cursor.moveToFirst()){
+           int getMoney = cursor.getColumnIndex(DBHelper.KEY_MONEY);
+           return cursor.getString(getMoney);
+        }
+        cursor.close();
+        return null;
+    }
+    public void UpdateMoney(int money) {
+        SQLiteDatabase database = dbHelper.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(dbHelper.KEY_MONEY, money);
+        database.update(dbHelper.TABLE_FINANCE, contentValues, DBHelper.KEY_ID + " = " + 1, null);
     }
 }
