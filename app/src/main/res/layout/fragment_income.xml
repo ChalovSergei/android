@@ -43,7 +43,7 @@
         android:layout_width="47dp"
         android:layout_height="47dp"
         android:layout_marginStart="5dp"
-        android:layout_marginBottom="596dp"
+        android:layout_marginBottom="590dp"
         android:src="@drawable/ic_baseline_clear_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -209,7 +209,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/etInputField"
+        android:id="@+id/tvInputField"
         android:layout_width="187dp"
         android:layout_height="33dp"
         android:layout_gravity="bottom"

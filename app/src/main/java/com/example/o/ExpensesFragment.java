@@ -2,6 +2,7 @@ package com.example.o;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
@@ -39,7 +40,7 @@ public class ExpensesFragment extends Fragment implements View.OnClickListener{
     Button btnZero;
     Button btnRemove;
     TextView tvMoney;
-    TextView etInputField;
+    TextView tvInputField;
     ImageButton btnClearInputField;
     Spinner spinnerIncome;
     EditText etCategory;
@@ -76,7 +77,7 @@ public class ExpensesFragment extends Fragment implements View.OnClickListener{
         btnRemove = rootView.findViewById(R.id.btnRemove);
         btnClearInputField = rootView.findViewById(R.id.btnClearInputField);
         tvMoney = rootView.findViewById(R.id.tvMoney);
-        etInputField = rootView.findViewById(R.id.etInputField);
+        tvInputField = rootView.findViewById(R.id.tvInputField);
         spinnerIncome = rootView.findViewById(R.id.spinnerIncome);
         etCategory = rootView.findViewById(R.id.etCategory);
         tvCurrentMoney = rootView.findViewById(R.id.tvCurrentMoney);
@@ -109,131 +110,135 @@ public class ExpensesFragment extends Fragment implements View.OnClickListener{
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
+            public void onNothingSelected(AdapterView<?> parent) { }
         });
         return rootView;
     }
-
 
     public void onClick(View view) {
         switch (view.getId())
         {
             case R.id.btnDecimal:
-                if(etInputField.getText().equals("")){
-                    etInputField.setText("0.");
+                if(tvInputField.getText().equals("")){
+                    tvInputField.setText("0.");
                 }
-                else if(etInputField.getText() != ""){
-                    etInputField.setText(etInputField.getText()+".");
+                else if(tvInputField.getText() != ""){
+                    tvInputField.setText(tvInputField.getText()+".");
                 }
                 break;
             case R.id.btnRemove:
-                String newStr = (String) etInputField.getText();
-                newStr = newStr.substring(0, newStr.length() - 1);
-                etInputField.setText(newStr);
+                if(tvInputField.getText().equals("")){ }
+                else{
+                    String newStr = (String) tvInputField.getText();
+                    newStr = newStr.substring(0, newStr.length() - 1);
+                    tvInputField.setText(newStr);
+                }
                 break;
             case R.id.btnZero:
-                etInputField.setText(etInputField.getText()+"0");
+                tvInputField.setText(tvInputField.getText()+"0");
                 break;
             case R.id.btnOne:
-                if(etInputField.getText().equals("0")){
-                    etInputField.setText("1");
+                if(tvInputField.getText().equals("0")){
+                    tvInputField.setText("1");
                 }
-                else if(etInputField.getText() != "0"){
-                    etInputField.setText(etInputField.getText()+"1");
+                else if(tvInputField.getText() != "0"){
+                    tvInputField.setText(tvInputField.getText()+"1");
                 }
-
                 break;
             case R.id.btnTwo:
-                if(etInputField.getText().equals("0")){
-                    etInputField.setText("2");
+                if(tvInputField.getText().equals("0")){
+                    tvInputField.setText("2");
                 }
-                else if(etInputField.getText() != "0"){
-                    etInputField.setText(etInputField.getText()+"2");
+                else if(tvInputField.getText() != "0"){
+                    tvInputField.setText(tvInputField.getText()+"2");
                 }
                 break;
             case R.id.btnThree:
-                if(etInputField.getText().equals("0")){
-                    etInputField.setText("3");
+                if(tvInputField.getText().equals("0")){
+                    tvInputField.setText("3");
                 }
-                else if(etInputField.getText() != "0"){
-                    etInputField.setText(etInputField.getText()+"3");
+                else if(tvInputField.getText() != "0"){
+                    tvInputField.setText(tvInputField.getText()+"3");
                 }
                 break;
             case R.id.btnFour:
-                if(etInputField.getText().equals("0")){
-                    etInputField.setText("4");
+                if(tvInputField.getText().equals("0")){
+                    tvInputField.setText("4");
                 }
-                else if(etInputField.getText() != "0"){
-                    etInputField.setText(etInputField.getText()+"4");
+                else if(tvInputField.getText() != "0"){
+                    tvInputField.setText(tvInputField.getText()+"4");
                 }
                 break;
             case R.id.btnFive:
-                if(etInputField.getText().equals("0")){
-                    etInputField.setText("5");
+                if(tvInputField.getText().equals("0")){
+                    tvInputField.setText("5");
                 }
-                else if(etInputField.getText() != "0"){
-                    etInputField.setText(etInputField.getText()+"5");
+                else if(tvInputField.getText() != "0"){
+                    tvInputField.setText(tvInputField.getText()+"5");
                 }
                 break;
             case R.id.btnSix:
-                if(etInputField.getText().equals("0")){
-                    etInputField.setText("6");
+                if(tvInputField.getText().equals("0")){
+                    tvInputField.setText("6");
                 }
-                else if(etInputField.getText() != "0"){
-                    etInputField.setText(etInputField.getText()+"6");
+                else if(tvInputField.getText() != "0"){
+                    tvInputField.setText(tvInputField.getText()+"6");
                 }
                 break;
             case R.id.btnSeven:
-                if(etInputField.getText().equals("0")){
-                    etInputField.setText("7");
+                if(tvInputField.getText().equals("0")){
+                    tvInputField.setText("7");
                 }
-                else if(etInputField.getText() != "0"){
-                    etInputField.setText(etInputField.getText()+"7");
+                else if(tvInputField.getText() != "0"){
+                    tvInputField.setText(tvInputField.getText()+"7");
                 }
                 break;
             case R.id.btnEight:
-                if(etInputField.getText().equals("0")){
-                    etInputField.setText("8");
+                if(tvInputField.getText().equals("0")){
+                    tvInputField.setText("8");
                 }
-                else if(etInputField.getText() != "0"){
-                    etInputField.setText(etInputField.getText()+"8");
+                else if(tvInputField.getText() != "0"){
+                    tvInputField.setText(tvInputField.getText()+"8");
                 }
                 break;
             case R.id.btnNine:
-                if(etInputField.getText().equals("0")){
-                    etInputField.setText("9");
+                if(tvInputField.getText().equals("0")){
+                    tvInputField.setText("9");
                 }
-                else if(etInputField.getText() != "0"){
-                    etInputField.setText(etInputField.getText()+"9");
+                else if(tvInputField.getText() != "0"){
+                    tvInputField.setText(tvInputField.getText()+"9");
                 }
                 break;
             case R.id.btnClearInputField:
-                etInputField.setText("");
+                if(tvInputField.getText().equals("")){}
+                else{
+                    tvInputField.setText("");
+
+                }
                 break;
             case R.id.btnAddInfo:
                 Date currentDate = new Date();
                 DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
                 String dateText = dateFormat.format(currentDate);
-
-                if(etCategory.getText().equals("")){
-                    UpdateMoney(Integer.parseInt(tvMoney.getText().toString()) - Integer.parseInt(etInputField.getText().toString()));
-                    InsertExpenses(tvTextIncome.getText().toString(), Integer.parseInt(etInputField.getText().toString()), dateText);
+                int date = DateConverter.convertToJulian(dateText);
+                if(etCategory.length() < 1){
+                    UpdateMoney(Integer.parseInt(tvMoney.getText().toString()) - Integer.parseInt(tvInputField.getText().toString()));
+                    InsertExpenses(String.valueOf(tvTextIncome.getText()), Integer.parseInt(tvInputField.getText().toString()),  date);
                     tvMoney.setText(GetValueMoney());
-                    etInputField.setText("");
+                    tvInputField.setText("");
                 }
                 else{
-                    UpdateMoney(Integer.parseInt(tvMoney.getText().toString()) - Integer.parseInt(etInputField.getText().toString()));
-                    InsertExpenses(etCategory.getText().toString(), Integer.parseInt(etInputField.getText().toString()), dateText);
+                    UpdateMoney(Integer.parseInt(tvMoney.getText().toString()) - Integer.parseInt(tvInputField.getText().toString()));
+                    InsertExpenses(String.valueOf(tvTextIncome.getText()), Integer.parseInt(tvInputField.getText().toString()), date);
                     tvMoney.setText(GetValueMoney());
-                    etInputField.setText("");
+                    tvInputField.setText("");
                     etCategory.setText("");
                 }
                 break;
         }
     }
-    public void InsertExpenses(String category, int money, String date){
+    //учет финансов по категории и дате
+    public void InsertExpenses(String category, int money, int date){
         SQLiteDatabase database = dbHelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(dbHelper.KEY_CATEGORY, category);
@@ -243,6 +248,7 @@ public class ExpensesFragment extends Fragment implements View.OnClickListener{
         database.insert(dbHelper.TABLE_EXPENSES, null, contentValues);
         database.close();
     }
+    //Счетчик денег
     public String GetValueMoney(){
         SQLiteDatabase database = dbHelper.getWritableDatabase();
         Cursor cursor = database.query(DBHelper.TABLE_FINANCE, null,
@@ -251,13 +257,22 @@ public class ExpensesFragment extends Fragment implements View.OnClickListener{
            int getMoney = cursor.getColumnIndex(DBHelper.KEY_MONEY);
            return cursor.getString(getMoney);
         }
+        database.close();
         cursor.close();
         return null;
     }
+    public long getProfilesCount() {
+        SQLiteDatabase database = dbHelper.getWritableDatabase();
+        long count = DatabaseUtils.queryNumEntries(database, dbHelper.TABLE_FINANCE);
+        database.close();
+        return count;
+    }
+
     public void UpdateMoney(int money) {
         SQLiteDatabase database = dbHelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(dbHelper.KEY_MONEY, money);
         database.update(dbHelper.TABLE_FINANCE, contentValues, DBHelper.KEY_ID + " = " + 1, null);
+        database.close();
     }
 }
