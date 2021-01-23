@@ -18,6 +18,8 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String KEY_CATEGORY = "category";
     public static final String KEY_MONEY = "money";
     public static final String KEY_DATE = "date";
+    public static final String KEY_DATE_START = "date_start";
+    public static final String KEY_DATE_END = "date_end";
 
     public static final String CREATE_INCOME_TABLE = "CREATE TABLE " + TABLE_INCOME + "("
             + KEY_ID + " INTEGER PRIMARY KEY,"
@@ -35,7 +37,8 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String CREATE_PLANNING_EXPENSES_TABLE = "CREATE TABLE " + TABLE_PLANNING_EXPENSES + "("
             + KEY_ID + " INTEGER PRIMARY KEY,"
             + KEY_MONEY + " INTEGER,"
-            + KEY_DATE + " INTEGER" + ")";
+            + KEY_DATE_START + " INTEGER,"
+            + KEY_DATE_END + " INTEGER"+ ")";
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

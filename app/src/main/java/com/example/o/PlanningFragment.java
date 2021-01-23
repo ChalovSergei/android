@@ -1,6 +1,8 @@
 package com.example.o;
 
+import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
@@ -99,9 +101,9 @@ public class PlanningFragment extends Fragment implements View.OnClickListener {
         return rootView;
     }
 
-    public void PlanningExpenses(){
-
-    }
+    //Сделать удаление планирования при конечной дате
+    //Сделать проверку на сегодняшнюю дату
+    //Сделать удаление планирования с уведомлением при переходе за 0
 
     public String GetValueMoney(){
         SQLiteDatabase database = dbHelper.getWritableDatabase();
@@ -217,6 +219,29 @@ public class PlanningFragment extends Fragment implements View.OnClickListener {
                     tvInputField.setText("");
                 }
                 break;
+            case R.id.btnAddPlanningExpenses:
+                if(getProfilesCount() == 0){
+                    int money = Integer.parseInt(String.valueOf(tvInputField.getText()));
+                    int dateStart = DateConverter.convertToJulian(etStartDate.getText().toString());
+                    int dateEnd = DateConverter.convertToJulian(etEndDate.getText().toString());
+                    SQLiteDatabase database = dbHelper.getWritableDatabase();
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put(DBHelper.KEY_MONEY, money);
+                    contentValues.put(DBHelper.KEY_DATE_START, dateStart);
+                    contentValues.put(DBHelper.KEY_DATE_END, dateEnd);
+                    database.insert(DBHelper.TABLE_PLANNING_EXPENSES, null, contentValues);
+                }
+                break;
+            case R.id.btnClearPlanningExpenses:
+                SQLiteDatabase database = dbHelper.getWritableDatabase();
+                database.delete(DBHelper.TABLE_PLANNING_EXPENSES, null, null);
+                break;
         }
+    }
+    public long getProfilesCount(){
+        SQLiteDatabase database = dbHelper.getWritableDatabase();
+        long count = DatabaseUtils.queryNumEntries(database, dbHelper.TABLE_PLANNING_EXPENSES);
+        database.close();
+        return count;
     }
 }

@@ -41,12 +41,16 @@ public class ExpensesFragment extends Fragment implements View.OnClickListener{
     Button btnRemove;
     TextView tvMoney;
     TextView tvInputField;
+    TextView tvTo;
+    TextView tvRemains;
     ImageButton btnClearInputField;
     Spinner spinnerIncome;
     EditText etCategory;
     DBHelper dbHelper;
     TextView tvCurrentMoney;
     TextView tvTextIncome;
+    TextView tvDateEndPlanning;
+    TextView tvPlanningMoney;
     String[] spinnerIncomeArray = {"Еда","Сотовая связь","Интернет","Одежда","Спорт", "Досуг", "Авто", "Дом", "Обеды"};
     Button btnAddIncomeTest;
 
@@ -78,11 +82,18 @@ public class ExpensesFragment extends Fragment implements View.OnClickListener{
         btnClearInputField = rootView.findViewById(R.id.btnClearInputField);
         tvMoney = rootView.findViewById(R.id.tvMoney);
         tvInputField = rootView.findViewById(R.id.tvInputField);
+        tvDateEndPlanning = rootView.findViewById(R.id.tvDateEndPlanning);
+        tvPlanningMoney = rootView.findViewById(R.id.tvPlanningMoney);
+        tvDateEndPlanning.setVisibility(View.GONE);
+        tvPlanningMoney.setVisibility(View.GONE);
         spinnerIncome = rootView.findViewById(R.id.spinnerIncome);
         etCategory = rootView.findViewById(R.id.etCategory);
         tvCurrentMoney = rootView.findViewById(R.id.tvCurrentMoney);
         tvTextIncome = rootView.findViewById(R.id.tvTextIncome);
-
+        tvTo = rootView.findViewById(R.id.tvTo);
+        tvRemains = rootView.findViewById(R.id.tvRemains);
+        tvTo.setVisibility(View.GONE);
+        tvRemains.setVisibility(View.GONE);
         btnAddIncomeTest.setOnClickListener(this);
         btnClearInputField.setOnClickListener(this);
         btnOne.setOnClickListener(this);
@@ -100,6 +111,16 @@ public class ExpensesFragment extends Fragment implements View.OnClickListener{
         dbHelper = new DBHelper(getActivity());
         tvMoney.setText(GetValueMoney());
         tvTextIncome.setVisibility(View.GONE);
+        if(!ViewPlanningEndDate().equals("null")){
+            tvDateEndPlanning.setText(ViewPlanningEndDate());
+            tvTo.setVisibility(View.VISIBLE);
+            tvRemains.setVisibility(View.VISIBLE);
+            tvDateEndPlanning.setVisibility(View.VISIBLE);
+            tvPlanningMoney.setVisibility(View.VISIBLE);
+        }
+        if(!ViewPlanningMoney().equals("null")){
+            tvPlanningMoney.setText(ViewPlanningMoney());
+        }
         ArrayAdapter<String> spinnerIncomeAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, spinnerIncomeArray);
         spinnerIncomeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         spinnerIncome.setAdapter(spinnerIncomeAdapter);
@@ -216,6 +237,7 @@ public class ExpensesFragment extends Fragment implements View.OnClickListener{
 
                 }
                 break;
+                //Дописать вычет из таблицы планирования
             case R.id.btnAddInfo:
                 Date currentDate = new Date();
                 DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
@@ -224,13 +246,21 @@ public class ExpensesFragment extends Fragment implements View.OnClickListener{
                 if(etCategory.length() < 1){
                     UpdateMoney(Integer.parseInt(tvMoney.getText().toString()) - Integer.parseInt(tvInputField.getText().toString()));
                     InsertExpenses(String.valueOf(tvTextIncome.getText()), Integer.parseInt(tvInputField.getText().toString()),  date);
+                    if(!tvPlanningMoney.getText().toString().equals("")){
+                        UpdatePlanningMoney(Integer.parseInt(tvPlanningMoney.getText().toString()) - Integer.parseInt(tvInputField.getText().toString()));
+                    }
                     tvMoney.setText(GetValueMoney());
+                    tvPlanningMoney.setText(ViewPlanningMoney());
                     tvInputField.setText("");
                 }
                 else{
                     UpdateMoney(Integer.parseInt(tvMoney.getText().toString()) - Integer.parseInt(tvInputField.getText().toString()));
                     InsertExpenses(String.valueOf(tvTextIncome.getText()), Integer.parseInt(tvInputField.getText().toString()), date);
+                    if(!tvPlanningMoney.getText().toString().equals("")){
+                        UpdatePlanningMoney(Integer.parseInt(tvPlanningMoney.getText().toString()) - Integer.parseInt(tvInputField.getText().toString()));
+                    }
                     tvMoney.setText(GetValueMoney());
+                    tvPlanningMoney.setText(ViewPlanningMoney());
                     tvInputField.setText("");
                     etCategory.setText("");
                 }
@@ -261,13 +291,53 @@ public class ExpensesFragment extends Fragment implements View.OnClickListener{
         cursor.close();
         return null;
     }
-    public long getProfilesCount() {
+    public void UpdatePlanningMoney(int money){
         SQLiteDatabase database = dbHelper.getWritableDatabase();
-        long count = DatabaseUtils.queryNumEntries(database, dbHelper.TABLE_FINANCE);
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(dbHelper.KEY_MONEY, money);
+        database.update(dbHelper.TABLE_PLANNING_EXPENSES, contentValues, DBHelper.KEY_ID + " = " + 1, null);
+        database.close();
+    }
+    public void DeletePlanningByDate(){
+
+    }
+
+    //Перевод Юлианской даты в стандартную и возврат ее в текст вью
+    public String ViewPlanningEndDate(){
+        if(getProfilesCount() != 0){
+            SQLiteDatabase database = dbHelper.getWritableDatabase();
+            Cursor cursor = database.query(DBHelper.TABLE_PLANNING_EXPENSES, null,
+                    null, null, null, null, null);
+            if(cursor.moveToFirst()){
+                int getDateEnd = cursor.getColumnIndex(DBHelper.KEY_DATE_END);
+                return DateConverter.ConvertFromJulian(cursor.getInt(getDateEnd));
+            }
+            database.close();
+            cursor.close();
+        }
+        return "null";
+    }
+    //Вывод денег
+    public String ViewPlanningMoney(){
+        if(getProfilesCount() != 0){
+            SQLiteDatabase database = dbHelper.getWritableDatabase();
+            Cursor cursor = database.query(DBHelper.TABLE_PLANNING_EXPENSES, null,
+                    null, null, null, null, null);
+            if(cursor.moveToFirst()){
+                int getMoney = cursor.getColumnIndex(DBHelper.KEY_MONEY);
+                return cursor.getString(getMoney);
+            }
+            database.close();
+            cursor.close();
+        }
+        return "null";
+    }
+    public long getProfilesCount(){
+        SQLiteDatabase database = dbHelper.getWritableDatabase();
+        long count = DatabaseUtils.queryNumEntries(database, dbHelper.TABLE_PLANNING_EXPENSES);
         database.close();
         return count;
     }
-
     public void UpdateMoney(int money) {
         SQLiteDatabase database = dbHelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
