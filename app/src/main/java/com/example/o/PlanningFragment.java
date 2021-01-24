@@ -100,23 +100,6 @@ public class PlanningFragment extends Fragment implements View.OnClickListener {
         btnRemove.setOnClickListener(this);
         return rootView;
     }
-
-    //Сделать удаление планирования при конечной дате
-    //Сделать проверку на сегодняшнюю дату
-    //Сделать удаление планирования с уведомлением при переходе за 0
-
-    public String GetValueMoney(){
-        SQLiteDatabase database = dbHelper.getWritableDatabase();
-        Cursor cursor = database.query(DBHelper.TABLE_FINANCE, null,
-                null, null, null, null, null);
-        if(cursor.moveToFirst()){
-            int getMoney = cursor.getColumnIndex(DBHelper.KEY_MONEY);
-            return cursor.getString(getMoney);
-        }
-        database.close();
-        cursor.close();
-        return null;
-    }
     public void onClick(View view) {
         switch (view.getId())
         {
@@ -129,9 +112,7 @@ public class PlanningFragment extends Fragment implements View.OnClickListener {
                 }
                 break;
             case R.id.btnRemove:
-                if(tvInputField.getText().equals("")){
-
-                }
+                if(tvInputField.getText().equals("")){ }
                 else{
                     String newStr = (String) tvInputField.getText();
                     newStr = newStr.substring(0, newStr.length() - 1);
@@ -238,10 +219,28 @@ public class PlanningFragment extends Fragment implements View.OnClickListener {
                 break;
         }
     }
+    /**Метод для вывода количества записей в таблице планирования
+     * @return Количество записей
+     */
     public long getProfilesCount(){
         SQLiteDatabase database = dbHelper.getWritableDatabase();
         long count = DatabaseUtils.queryNumEntries(database, dbHelper.TABLE_PLANNING_EXPENSES);
         database.close();
         return count;
+    }
+    /**Метод для вывода текущего состояния финансов
+     * @return Строка с количеством денег
+     */
+    public String GetValueMoney(){
+        SQLiteDatabase database = dbHelper.getWritableDatabase();
+        Cursor cursor = database.query(DBHelper.TABLE_FINANCE, null,
+                null, null, null, null, null);
+        if(cursor.moveToFirst()){
+            int getMoney = cursor.getColumnIndex(DBHelper.KEY_MONEY);
+            return cursor.getString(getMoney);
+        }
+        database.close();
+        cursor.close();
+        return null;
     }
 }

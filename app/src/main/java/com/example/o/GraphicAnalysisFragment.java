@@ -1,36 +1,24 @@
 package com.example.o;
 
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.Toast;
-
-import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -88,6 +76,8 @@ public class GraphicAnalysisFragment extends Fragment implements View.OnClickLis
         ChartCreationExpenses();
     }
 
+    /**Метод для построения диаграммы доходов
+     */
     public void ChartCreationIncome(){
         String[][] graphicMass = dateForChartIncome();
         ArrayList<PieEntry> income = new ArrayList<>();
@@ -123,6 +113,9 @@ public class GraphicAnalysisFragment extends Fragment implements View.OnClickLis
         }
     }
 
+    /**Метод для создания массива, который используется при построении диаграммы доходов
+     * @return Двумерный массив, состоящий из названия категории и суммы доходов по ней
+     */
     public String[][] dateForChartIncome(){
         Cursor cursor;
 
@@ -133,6 +126,7 @@ public class GraphicAnalysisFragment extends Fragment implements View.OnClickLis
         ArrayList<String> equalList = new ArrayList<>();
 
         SQLiteDatabase database = dbHelper.getWritableDatabase();
+
         int startDateIncome = DateConverter.convertToJulian(String.valueOf(etStartDate.getText()));
         int endDateIncome = DateConverter.convertToJulian(String.valueOf(etEndDate.getText()));
         String[][] graphicMassNull = new String[1][1];
@@ -189,7 +183,8 @@ public class GraphicAnalysisFragment extends Fragment implements View.OnClickLis
         return graphicMassNull;
     }
 
-
+    /**Метод для построения диаграммы расходов
+     */
     public void ChartCreationExpenses(){
         String[][] graphicMass = dateForChartExpenses();
         ArrayList<PieEntry> income = new ArrayList<>();
@@ -225,6 +220,9 @@ public class GraphicAnalysisFragment extends Fragment implements View.OnClickLis
         }
     }
 
+    /**Метод для создания массива, который используется при построении диаграммы расходов
+     * @return Двумерный массив, состоящий из названия категории и суммы расходов по ней
+     */
     public String[][] dateForChartExpenses(){
         Cursor cursor;
         int listCount = 0;
@@ -233,6 +231,7 @@ public class GraphicAnalysisFragment extends Fragment implements View.OnClickLis
         ArrayList<String> equalList = new ArrayList<>();
 
         SQLiteDatabase database = dbHelper.getWritableDatabase();
+
         int startDateIncome = DateConverter.convertToJulian(String.valueOf(etStartDate.getText()));
         int endDateIncome = DateConverter.convertToJulian(String.valueOf(etEndDate.getText()));
         String[][] graphicMassNull = new String[1][1];

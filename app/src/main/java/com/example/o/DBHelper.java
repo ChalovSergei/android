@@ -1,11 +1,8 @@
 package com.example.o;
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
-import java.sql.Date;
 
 public class DBHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 7;
@@ -63,6 +60,4 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PLANNING_EXPENSES);
         onCreate(db);
     }
-
-
 }

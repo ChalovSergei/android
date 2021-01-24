@@ -3,10 +3,13 @@ package com.example.o;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Date;
 
 public class DateConverter {
+    /**Метод для преобразования Григорианской даты в Юлианскую
+     * @param unformattedDate - Григорианская дата
+     * @return Юлианская дата в целочисленном формате
+     */
     public static int convertToJulian(String unformattedDate)
     {
         int resultJulian = 0;
@@ -23,12 +26,10 @@ public class DateConverter {
             int month = Integer.valueOf(monthS);
             int year = Integer.valueOf(yearS);
 
-            //Leap year check
             if(year % 4 == 0)
             {
                 monthValues[1] = 29;
             }
-
             String julianDate = "1";
 
             julianDate += yearS.substring(2,4);
@@ -55,6 +56,10 @@ public class DateConverter {
         }
         return resultJulian;
     }
+    /**Метод для преобразования Григорианской даты в Юлианскую
+     * @param julian - Юлианская дата
+     * @return Григорианская дата в формате строки
+     */
     public static String ConvertFromJulian(int julian){
         DateFormat dt = new SimpleDateFormat("Myydd");
         String str = "";

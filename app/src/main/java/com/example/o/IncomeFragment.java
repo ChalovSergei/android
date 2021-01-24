@@ -6,7 +6,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +16,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -243,7 +238,12 @@ public class IncomeFragment extends Fragment implements View.OnClickListener {
                 break;
         }
     }
-    //учет финансов по категориям и дате
+
+    /**Метод для учета доходов по категории и дате
+     * @param category - название категории
+     * @param money - количество денег
+     * @param date - текущая дата
+     */
     public void InsertIncome(String category, int money, int date){
         SQLiteDatabase database = dbHelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -255,7 +255,9 @@ public class IncomeFragment extends Fragment implements View.OnClickListener {
         database.close();
     }
 
-    //счетчик денег
+    /**Метод для вывода текущего состояния финансов
+     * @return Строка с количеством денег
+     */
     public String GetValueMoney(){
         SQLiteDatabase database = dbHelper.getWritableDatabase();
         Cursor cursor = database.query(DBHelper.TABLE_FINANCE, null,
@@ -268,6 +270,9 @@ public class IncomeFragment extends Fragment implements View.OnClickListener {
         return null;
     }
 
+    /**Метод для изменение количества денег
+     * @param money - количество денег
+     */
     public void UpdateMoney(int money) {
         SQLiteDatabase database = dbHelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();

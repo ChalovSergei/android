@@ -8,7 +8,6 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -41,19 +39,17 @@ public class ExpensesFragment extends Fragment implements View.OnClickListener{
     Button btnRemove;
     TextView tvMoney;
     TextView tvInputField;
-    TextView tvTo;
-    TextView tvRemains;
     ImageButton btnClearInputField;
     Spinner spinnerIncome;
     EditText etCategory;
     DBHelper dbHelper;
     TextView tvCurrentMoney;
     TextView tvTextIncome;
-    TextView tvDateEndPlanning;
     TextView tvPlanningMoney;
+    TextView tvPlanningMoneyCalc;
     String[] spinnerIncomeArray = {"Еда","Сотовая связь","Интернет","Одежда","Спорт", "Досуг", "Авто", "Дом", "Обеды"};
     Button btnAddIncomeTest;
-
+    String message = "";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,6 +60,9 @@ public class ExpensesFragment extends Fragment implements View.OnClickListener{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Date currentDate = new Date();
+        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+        String dateText = dateFormat.format(currentDate);
         View rootView = inflater.inflate(R.layout.fragment_expenses, container, false);
         btnOne = rootView.findViewById(R.id.btnOne);
         btnTwo = rootView.findViewById(R.id.btnTwo);
@@ -82,18 +81,18 @@ public class ExpensesFragment extends Fragment implements View.OnClickListener{
         btnClearInputField = rootView.findViewById(R.id.btnClearInputField);
         tvMoney = rootView.findViewById(R.id.tvMoney);
         tvInputField = rootView.findViewById(R.id.tvInputField);
-        tvDateEndPlanning = rootView.findViewById(R.id.tvDateEndPlanning);
+
         tvPlanningMoney = rootView.findViewById(R.id.tvPlanningMoney);
-        tvDateEndPlanning.setVisibility(View.GONE);
+        tvPlanningMoneyCalc = rootView.findViewById(R.id.tvPlanningMoneyCalc);
+
         tvPlanningMoney.setVisibility(View.GONE);
+        tvPlanningMoneyCalc.setVisibility(View.GONE);
         spinnerIncome = rootView.findViewById(R.id.spinnerIncome);
         etCategory = rootView.findViewById(R.id.etCategory);
         tvCurrentMoney = rootView.findViewById(R.id.tvCurrentMoney);
         tvTextIncome = rootView.findViewById(R.id.tvTextIncome);
-        tvTo = rootView.findViewById(R.id.tvTo);
-        tvRemains = rootView.findViewById(R.id.tvRemains);
-        tvTo.setVisibility(View.GONE);
-        tvRemains.setVisibility(View.GONE);
+
+
         btnAddIncomeTest.setOnClickListener(this);
         btnClearInputField.setOnClickListener(this);
         btnOne.setOnClickListener(this);
@@ -111,15 +110,21 @@ public class ExpensesFragment extends Fragment implements View.OnClickListener{
         dbHelper = new DBHelper(getActivity());
         tvMoney.setText(GetValueMoney());
         tvTextIncome.setVisibility(View.GONE);
+        DeletePlanningByDate();
         if(!ViewPlanningEndDate().equals("null")){
-            tvDateEndPlanning.setText(ViewPlanningEndDate());
-            tvTo.setVisibility(View.VISIBLE);
-            tvRemains.setVisibility(View.VISIBLE);
-            tvDateEndPlanning.setVisibility(View.VISIBLE);
             tvPlanningMoney.setVisibility(View.VISIBLE);
         }
         if(!ViewPlanningMoney().equals("null")){
-            tvPlanningMoney.setText(ViewPlanningMoney());
+            if(Integer.parseInt(ViewPlanningMoney()) >= 0){
+                message = "Сегодня: "+dateText+ "\n" + "До "+ViewPlanningEndDate() + "\n" + "Осталось: " + ViewPlanningMoney();
+                tvPlanningMoney.setText(message);
+                tvPlanningMoneyCalc.setText(ViewPlanningMoney());
+            }
+            else{
+                message = "Сегодня: "+dateText+ "\n" + "До "+ViewPlanningEndDate() + "\n" + "Перерасход запланированных средств: " + ViewPlanningMoney();
+                tvPlanningMoney.setText(message);
+                tvPlanningMoneyCalc.setText(ViewPlanningMoney());
+            }
         }
         ArrayAdapter<String> spinnerIncomeAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, spinnerIncomeArray);
         spinnerIncomeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
@@ -237,7 +242,6 @@ public class ExpensesFragment extends Fragment implements View.OnClickListener{
 
                 }
                 break;
-                //Дописать вычет из таблицы планирования
             case R.id.btnAddInfo:
                 Date currentDate = new Date();
                 DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
@@ -246,28 +250,52 @@ public class ExpensesFragment extends Fragment implements View.OnClickListener{
                 if(etCategory.length() < 1){
                     UpdateMoney(Integer.parseInt(tvMoney.getText().toString()) - Integer.parseInt(tvInputField.getText().toString()));
                     InsertExpenses(String.valueOf(tvTextIncome.getText()), Integer.parseInt(tvInputField.getText().toString()),  date);
-                    if(!tvPlanningMoney.getText().toString().equals("")){
-                        UpdatePlanningMoney(Integer.parseInt(tvPlanningMoney.getText().toString()) - Integer.parseInt(tvInputField.getText().toString()));
+                    if(!tvPlanningMoneyCalc.getText().toString().equals("")){
+                        UpdatePlanningMoney(Integer.parseInt(tvPlanningMoneyCalc.getText().toString()) - Integer.parseInt(tvInputField.getText().toString()));
+                        if(Integer.parseInt(ViewPlanningMoney()) >= 0){
+                            message = "Сегодня: "+dateText+ "\n" + "До "+ViewPlanningEndDate() + "\n" + "Осталось: " + ViewPlanningMoney();
+                            tvPlanningMoney.setText(message);
+                            tvPlanningMoneyCalc.setText(ViewPlanningMoney());
+                        }
+                        else{
+                            message = "Сегодня: "+dateText+ "\n" + "До "+ViewPlanningEndDate() + "\n" + "Перерасход запланированных средств: " + ViewPlanningMoney();
+                            tvPlanningMoney.setText(message);
+                            tvPlanningMoneyCalc.setText(ViewPlanningMoney());
+                        }
                     }
                     tvMoney.setText(GetValueMoney());
-                    tvPlanningMoney.setText(ViewPlanningMoney());
                     tvInputField.setText("");
                 }
                 else{
                     UpdateMoney(Integer.parseInt(tvMoney.getText().toString()) - Integer.parseInt(tvInputField.getText().toString()));
-                    InsertExpenses(String.valueOf(tvTextIncome.getText()), Integer.parseInt(tvInputField.getText().toString()), date);
-                    if(!tvPlanningMoney.getText().toString().equals("")){
-                        UpdatePlanningMoney(Integer.parseInt(tvPlanningMoney.getText().toString()) - Integer.parseInt(tvInputField.getText().toString()));
+                    InsertExpenses(String.valueOf(etCategory.getText()), Integer.parseInt(tvInputField.getText().toString()), date);
+                    if(!tvPlanningMoneyCalc.getText().toString().equals("")){
+                        UpdatePlanningMoney(Integer.parseInt(tvPlanningMoneyCalc.getText().toString()) - Integer.parseInt(tvInputField.getText().toString()));
+                        if(Integer.parseInt(ViewPlanningMoney()) >= 0){
+                            message = "Сегодня: "+dateText+ "\n" + "До "+ViewPlanningEndDate() + "\n" + "Осталось: " + ViewPlanningMoney();
+                            tvPlanningMoney.setText(message);
+                            tvPlanningMoneyCalc.setText(ViewPlanningMoney());
+                        }
+                        else{
+                            message = "Сегодня: "+dateText+ "\n" + "До "+ViewPlanningEndDate() + "\n" + "Перерасход запланированных средств: " + ViewPlanningMoney();
+                            tvPlanningMoney.setText(message);
+                            tvPlanningMoneyCalc.setText(ViewPlanningMoney());
+                        }
                     }
                     tvMoney.setText(GetValueMoney());
-                    tvPlanningMoney.setText(ViewPlanningMoney());
                     tvInputField.setText("");
                     etCategory.setText("");
                 }
                 break;
         }
     }
-    //учет финансов по категории и дате
+
+
+    /**Метод для учета расходов по категории и дате
+     * @param category - название категории
+     * @param money - количество денег
+     * @param date - текущая дата
+     */
     public void InsertExpenses(String category, int money, int date){
         SQLiteDatabase database = dbHelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -278,7 +306,10 @@ public class ExpensesFragment extends Fragment implements View.OnClickListener{
         database.insert(dbHelper.TABLE_EXPENSES, null, contentValues);
         database.close();
     }
-    //Счетчик денег
+
+    /**Метод для вывода текущего состояния финансов
+     * @return Строка с количеством денег
+     */
     public String GetValueMoney(){
         SQLiteDatabase database = dbHelper.getWritableDatabase();
         Cursor cursor = database.query(DBHelper.TABLE_FINANCE, null,
@@ -291,6 +322,11 @@ public class ExpensesFragment extends Fragment implements View.OnClickListener{
         cursor.close();
         return null;
     }
+
+
+    /**Метод для изменения значения денег в таблице планирования
+     * @param money - количество денег
+     */
     public void UpdatePlanningMoney(int money){
         SQLiteDatabase database = dbHelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -298,11 +334,22 @@ public class ExpensesFragment extends Fragment implements View.OnClickListener{
         database.update(dbHelper.TABLE_PLANNING_EXPENSES, contentValues, DBHelper.KEY_ID + " = " + 1, null);
         database.close();
     }
-    public void DeletePlanningByDate(){
 
+    /**Метод для удаления планирования из таблицы при окончании его периода
+     */
+    public void DeletePlanningByDate(){
+        Date currentDate = new Date();
+        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+        String dateText = dateFormat.format(currentDate);
+        if(ViewPlanningEndDate().equals(dateText)){
+            SQLiteDatabase database = dbHelper.getWritableDatabase();
+            database.delete(DBHelper.TABLE_PLANNING_EXPENSES, null, null);
+        }
     }
 
-    //Перевод Юлианской даты в стандартную и возврат ее в текст вью
+    /**Метод для получения из таблицы планирования даты и перевода ее из Юлианской в Григорианскую
+     * @return Строка с датой в Григорианском формате
+     */
     public String ViewPlanningEndDate(){
         if(getProfilesCount() != 0){
             SQLiteDatabase database = dbHelper.getWritableDatabase();
@@ -317,7 +364,10 @@ public class ExpensesFragment extends Fragment implements View.OnClickListener{
         }
         return "null";
     }
-    //Вывод денег
+
+    /**Метод для вывода оставшихся денег, указанных при планировании
+     * @return Строка остатком денег
+     */
     public String ViewPlanningMoney(){
         if(getProfilesCount() != 0){
             SQLiteDatabase database = dbHelper.getWritableDatabase();
@@ -332,12 +382,20 @@ public class ExpensesFragment extends Fragment implements View.OnClickListener{
         }
         return "null";
     }
+
+    /**Метод для вывода количества записей в таблице планирования
+     * @return Количество записей
+     */
     public long getProfilesCount(){
         SQLiteDatabase database = dbHelper.getWritableDatabase();
         long count = DatabaseUtils.queryNumEntries(database, dbHelper.TABLE_PLANNING_EXPENSES);
         database.close();
         return count;
     }
+
+    /**Метод для изменение количества денег
+     * @param money - количество денег
+     */
     public void UpdateMoney(int money) {
         SQLiteDatabase database = dbHelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
