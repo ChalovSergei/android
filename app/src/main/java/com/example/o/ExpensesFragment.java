@@ -246,8 +246,8 @@ public class ExpensesFragment extends Fragment implements View.OnClickListener{
                 Date currentDate = new Date();
                 DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
                 String dateText = dateFormat.format(currentDate);
-                int date = DateConverter.convertToJulian(dateText);
-                if(etCategory.length() < 1){
+                int date = DateConverter.ConvertToJulian(dateText);
+                if(etCategory.length() < 1 && tvInputField.length() > 0){
                     UpdateMoney(Integer.parseInt(tvMoney.getText().toString()) - Integer.parseInt(tvInputField.getText().toString()));
                     InsertExpenses(String.valueOf(tvTextIncome.getText()), Integer.parseInt(tvInputField.getText().toString()),  date);
                     if(!tvPlanningMoneyCalc.getText().toString().equals("")){
@@ -266,7 +266,7 @@ public class ExpensesFragment extends Fragment implements View.OnClickListener{
                     tvMoney.setText(GetValueMoney());
                     tvInputField.setText("");
                 }
-                else{
+                else if(tvInputField.length() > 0){
                     UpdateMoney(Integer.parseInt(tvMoney.getText().toString()) - Integer.parseInt(tvInputField.getText().toString()));
                     InsertExpenses(String.valueOf(etCategory.getText()), Integer.parseInt(tvInputField.getText().toString()), date);
                     if(!tvPlanningMoneyCalc.getText().toString().equals("")){
@@ -351,7 +351,7 @@ public class ExpensesFragment extends Fragment implements View.OnClickListener{
      * @return Строка с датой в Григорианском формате
      */
     public String ViewPlanningEndDate(){
-        if(getProfilesCount() != 0){
+        if(GetProfilesCount() != 0){
             SQLiteDatabase database = dbHelper.getWritableDatabase();
             Cursor cursor = database.query(DBHelper.TABLE_PLANNING_EXPENSES, null,
                     null, null, null, null, null);
@@ -369,7 +369,7 @@ public class ExpensesFragment extends Fragment implements View.OnClickListener{
      * @return Строка остатком денег
      */
     public String ViewPlanningMoney(){
-        if(getProfilesCount() != 0){
+        if(GetProfilesCount() != 0){
             SQLiteDatabase database = dbHelper.getWritableDatabase();
             Cursor cursor = database.query(DBHelper.TABLE_PLANNING_EXPENSES, null,
                     null, null, null, null, null);
@@ -386,7 +386,7 @@ public class ExpensesFragment extends Fragment implements View.OnClickListener{
     /**Метод для вывода количества записей в таблице планирования
      * @return Количество записей
      */
-    public long getProfilesCount(){
+    public long GetProfilesCount(){
         SQLiteDatabase database = dbHelper.getWritableDatabase();
         long count = DatabaseUtils.queryNumEntries(database, dbHelper.TABLE_PLANNING_EXPENSES);
         database.close();

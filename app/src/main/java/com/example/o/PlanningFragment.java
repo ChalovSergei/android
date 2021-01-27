@@ -46,7 +46,6 @@ public class PlanningFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -201,10 +200,10 @@ public class PlanningFragment extends Fragment implements View.OnClickListener {
                 }
                 break;
             case R.id.btnAddPlanningExpenses:
-                if(getProfilesCount() == 0){
+                if(GetProfilesCount() == 0 && tvInputField.length() > 0){
                     int money = Integer.parseInt(String.valueOf(tvInputField.getText()));
-                    int dateStart = DateConverter.convertToJulian(etStartDate.getText().toString());
-                    int dateEnd = DateConverter.convertToJulian(etEndDate.getText().toString());
+                    int dateStart = DateConverter.ConvertToJulian(etStartDate.getText().toString());
+                    int dateEnd = DateConverter.ConvertToJulian(etEndDate.getText().toString());
                     SQLiteDatabase database = dbHelper.getWritableDatabase();
                     ContentValues contentValues = new ContentValues();
                     contentValues.put(DBHelper.KEY_MONEY, money);
@@ -222,7 +221,7 @@ public class PlanningFragment extends Fragment implements View.OnClickListener {
     /**Метод для вывода количества записей в таблице планирования
      * @return Количество записей
      */
-    public long getProfilesCount(){
+    public long GetProfilesCount(){
         SQLiteDatabase database = dbHelper.getWritableDatabase();
         long count = DatabaseUtils.queryNumEntries(database, dbHelper.TABLE_PLANNING_EXPENSES);
         database.close();

@@ -221,14 +221,14 @@ public class IncomeFragment extends Fragment implements View.OnClickListener {
                 Date currentDate = new Date();
                 DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
                 String dateText = dateFormat.format(currentDate);
-                int date = DateConverter.convertToJulian(dateText);
-                if(etCategory.length() < 1){
+                int date = DateConverter.ConvertToJulian(dateText);
+                if(etCategory.length() < 1 && tvInputField.length() > 0){
                     UpdateMoney(Integer.parseInt(tvInputField.getText().toString()) + Integer.parseInt(tvMoney.getText().toString()));
                     InsertIncome(String.valueOf(tvTextIncome.getText()), Integer.parseInt(tvInputField.getText().toString()), date);
                     tvMoney.setText(GetValueMoney());
                     tvInputField.setText("");
                 }
-                else{
+                else if(tvInputField.length() > 0){
                     UpdateMoney(Integer.parseInt(tvInputField.getText().toString()) + Integer.parseInt(tvMoney.getText().toString()));
                     InsertIncome(String.valueOf(etCategory.getText()), Integer.parseInt(tvInputField.getText().toString()), date);
                     tvMoney.setText(GetValueMoney());

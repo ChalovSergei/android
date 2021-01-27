@@ -79,7 +79,7 @@ public class GraphicAnalysisFragment extends Fragment implements View.OnClickLis
     /**Метод для построения диаграммы доходов
      */
     public void ChartCreationIncome(){
-        String[][] graphicMass = dateForChartIncome();
+        String[][] graphicMass = DateForChartIncome();
         ArrayList<PieEntry> income = new ArrayList<>();
         if(graphicMass[0][0].equals("null")){
             income.add(new PieEntry(0, "За данный период доходы отсутствуют"));
@@ -116,7 +116,7 @@ public class GraphicAnalysisFragment extends Fragment implements View.OnClickLis
     /**Метод для создания массива, который используется при построении диаграммы доходов
      * @return Двумерный массив, состоящий из названия категории и суммы доходов по ней
      */
-    public String[][] dateForChartIncome(){
+    public String[][] DateForChartIncome(){
         Cursor cursor;
 
         int listCount = 0;
@@ -127,8 +127,8 @@ public class GraphicAnalysisFragment extends Fragment implements View.OnClickLis
 
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 
-        int startDateIncome = DateConverter.convertToJulian(String.valueOf(etStartDate.getText()));
-        int endDateIncome = DateConverter.convertToJulian(String.valueOf(etEndDate.getText()));
+        int startDateIncome = DateConverter.ConvertToJulian(String.valueOf(etStartDate.getText()));
+        int endDateIncome = DateConverter.ConvertToJulian(String.valueOf(etEndDate.getText()));
         String[][] graphicMassNull = new String[1][1];
         graphicMassNull[0][0] = "null";
         cursor = database.rawQuery(
@@ -186,7 +186,7 @@ public class GraphicAnalysisFragment extends Fragment implements View.OnClickLis
     /**Метод для построения диаграммы расходов
      */
     public void ChartCreationExpenses(){
-        String[][] graphicMass = dateForChartExpenses();
+        String[][] graphicMass = DateForChartExpenses();
         ArrayList<PieEntry> income = new ArrayList<>();
         if(graphicMass[0][0].equals("null")){
             income.add(new PieEntry(0, "За данный период расходы отсутствуют"));
@@ -223,7 +223,7 @@ public class GraphicAnalysisFragment extends Fragment implements View.OnClickLis
     /**Метод для создания массива, который используется при построении диаграммы расходов
      * @return Двумерный массив, состоящий из названия категории и суммы расходов по ней
      */
-    public String[][] dateForChartExpenses(){
+    public String[][] DateForChartExpenses(){
         Cursor cursor;
         int listCount = 0;
 
@@ -232,8 +232,8 @@ public class GraphicAnalysisFragment extends Fragment implements View.OnClickLis
 
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 
-        int startDateIncome = DateConverter.convertToJulian(String.valueOf(etStartDate.getText()));
-        int endDateIncome = DateConverter.convertToJulian(String.valueOf(etEndDate.getText()));
+        int startDateIncome = DateConverter.ConvertToJulian(String.valueOf(etStartDate.getText()));
+        int endDateIncome = DateConverter.ConvertToJulian(String.valueOf(etEndDate.getText()));
         String[][] graphicMassNull = new String[1][1];
         graphicMassNull[0][0] = "null";
 

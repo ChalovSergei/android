@@ -10,7 +10,7 @@ public class DateConverter {
      * @param unformattedDate - Григорианская дата
      * @return Юлианская дата в целочисленном формате
      */
-    public static int convertToJulian(String unformattedDate)
+    public static int ConvertToJulian(String unformattedDate)
     {
         int resultJulian = 0;
         if(unformattedDate.length() > 0)
