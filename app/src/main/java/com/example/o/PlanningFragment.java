@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -200,21 +202,66 @@ public class PlanningFragment extends Fragment implements View.OnClickListener {
                 }
                 break;
             case R.id.btnAddPlanningExpenses:
+                //добавить проверку и возврат тоста
                 if(GetProfilesCount() == 0 && tvInputField.length() > 0){
                     int money = Integer.parseInt(String.valueOf(tvInputField.getText()));
                     int dateStart = DateConverter.ConvertToJulian(etStartDate.getText().toString());
                     int dateEnd = DateConverter.ConvertToJulian(etEndDate.getText().toString());
-                    SQLiteDatabase database = dbHelper.getWritableDatabase();
-                    ContentValues contentValues = new ContentValues();
-                    contentValues.put(DBHelper.KEY_MONEY, money);
-                    contentValues.put(DBHelper.KEY_DATE_START, dateStart);
-                    contentValues.put(DBHelper.KEY_DATE_END, dateEnd);
-                    database.insert(DBHelper.TABLE_PLANNING_EXPENSES, null, contentValues);
+                    if(dateStart != 0 && dateEnd != 0 && dateStart < dateEnd){
+                        SQLiteDatabase database = dbHelper.getWritableDatabase();
+                        ContentValues contentValues = new ContentValues();
+                        contentValues.put(DBHelper.KEY_MONEY, money);
+                        contentValues.put(DBHelper.KEY_DATE_START, dateStart);
+                        contentValues.put(DBHelper.KEY_DATE_END, dateEnd);
+                        database.insert(DBHelper.TABLE_PLANNING_EXPENSES, null, contentValues);
+                    }
+                    else if(dateStart == 0 && dateEnd == 0 || (dateStart == 0 || dateEnd == 0)){
+                        Toast toast = Toast.makeText(getActivity().getApplicationContext(),
+                                "Ошибка ввода даты"+"\n"
+                                        +"Дату необходимо записать в формате: День.Месяц.Год(dd.mm.yyyy)",
+                                Toast.LENGTH_LONG);
+                        toast.setGravity(Gravity.CENTER, 100, 100);
+                        toast.show();
+                    }
+                    else if(dateStart > dateEnd){
+                        Toast toast = Toast.makeText(getActivity().getApplicationContext(),
+                                "Ошибка диапазона дат:"+"\n"
+                                        +"Дата начала периода должна быть раньше, чем дата его завершения",
+                                Toast.LENGTH_LONG);
+                        toast.setGravity(Gravity.CENTER, 100, 100);
+                        toast.show();
+                    }
+                }
+                else if (GetProfilesCount() == 1){
+                    Toast toast = Toast.makeText(getActivity().getApplicationContext(),
+                            "Ошибка добавления планирования:"+"\n"
+                                    +"Планирование уже было создано",
+                            Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER, 100, 100);
+                    toast.show();
+                }
+                else if (tvInputField.length() == 0){
+                    Toast toast = Toast.makeText(getActivity().getApplicationContext(),
+                            "Ошибка ввода суммы планирования:"+"\n"
+                                    +"Введите сумму планирования",
+                            Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER, 100, 100);
+                    toast.show();
                 }
                 break;
             case R.id.btnClearPlanningExpenses:
-                SQLiteDatabase database = dbHelper.getWritableDatabase();
-                database.delete(DBHelper.TABLE_PLANNING_EXPENSES, null, null);
+                if(GetProfilesCount() == 1){
+                    SQLiteDatabase database = dbHelper.getWritableDatabase();
+                    database.delete(DBHelper.TABLE_PLANNING_EXPENSES, null, null);
+                }
+                else{
+                    Toast toast = Toast.makeText(getActivity().getApplicationContext(),
+                            "Ошибка удаления планирования:"+"\n"
+                                    +"Планирование отсутствует",
+                            Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER, 100, 100);
+                    toast.show();
+                }
                 break;
         }
     }

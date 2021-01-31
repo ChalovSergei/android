@@ -6,11 +6,15 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
@@ -126,63 +130,77 @@ public class GraphicAnalysisFragment extends Fragment implements View.OnClickLis
         ArrayList<String> equalList = new ArrayList<>();
 
         SQLiteDatabase database = dbHelper.getWritableDatabase();
-
-        int startDateIncome = DateConverter.ConvertToJulian(String.valueOf(etStartDate.getText()));
-        int endDateIncome = DateConverter.ConvertToJulian(String.valueOf(etEndDate.getText()));
         String[][] graphicMassNull = new String[1][1];
         graphicMassNull[0][0] = "null";
-        cursor = database.rawQuery(
-                "SELECT " + dbHelper.KEY_MONEY + ", "+dbHelper.KEY_CATEGORY+"  FROM  "+dbHelper.TABLE_INCOME+"  WHERE "+dbHelper.KEY_DATE+" BETWEEN "+startDateIncome+" AND  "+endDateIncome+" ", null);
-        if(cursor.moveToFirst()){
-            int categoryIndex = cursor.getColumnIndex(DBHelper.KEY_CATEGORY);
-            int moneyIndex = cursor.getColumnIndex(DBHelper.KEY_MONEY);
-            do {
-                incomeList.add(cursor.getString(categoryIndex));
-                incomeList.add(String.valueOf(cursor.getInt(moneyIndex)));
-            }
-            while (cursor.moveToNext());
-        }
-        String[][] incomeMass = new String[incomeList.size() / 2][2];
-        if(incomeList.size() > 0){
-            //создание массива из таблицы дохода
-            for (int i = 0; i < incomeList.size() / 2; i++){
-                for(int j = 0; j < 2; j++){
-                    incomeMass[i][j] = incomeList.get(listCount);
-                    listCount++;
+        int startDateIncome = DateConverter.ConvertToJulian(String.valueOf(etStartDate.getText()));
+        int endDateIncome = DateConverter.ConvertToJulian(String.valueOf(etEndDate.getText()));
+        if(startDateIncome != 0 && endDateIncome != 0 && startDateIncome <= endDateIncome){
+            cursor = database.rawQuery(
+                    "SELECT " + dbHelper.KEY_MONEY + ", "+dbHelper.KEY_CATEGORY+"  FROM  "+dbHelper.TABLE_INCOME+"  WHERE "+dbHelper.KEY_DATE+" BETWEEN "+startDateIncome+" AND  "+endDateIncome+" ", null);
+            if(cursor.moveToFirst()){
+                int categoryIndex = cursor.getColumnIndex(DBHelper.KEY_CATEGORY);
+                int moneyIndex = cursor.getColumnIndex(DBHelper.KEY_MONEY);
+                do {
+                    incomeList.add(cursor.getString(categoryIndex));
+                    incomeList.add(String.valueOf(cursor.getInt(moneyIndex)));
                 }
+                while (cursor.moveToNext());
             }
-            //список категорий
-            for (int i = 0; i < incomeList.size() / 2; i++){
-                for(int j = 0; j < 1; j++){
-                    if(!equalList.contains(incomeMass[i][j])){
-                        equalList.add(incomeMass[i][j]);
+            String[][] incomeMass = new String[incomeList.size() / 2][2];
+            if(incomeList.size() > 0){
+                //создание массива из таблицы дохода
+                for (int i = 0; i < incomeList.size() / 2; i++){
+                    for(int j = 0; j < 2; j++){
+                        incomeMass[i][j] = incomeList.get(listCount);
+                        listCount++;
                     }
                 }
-            }
-            //создание массива денег
-            int[] moneyMass = new int[equalList.size()];
-            for (int countEqualList = 0; countEqualList < equalList.size(); countEqualList++){
-                for (int j = 0; j < incomeList.size() / 2; j++){
-                    if(incomeMass[j][0].equals(equalList.get(countEqualList))){
-                        moneyMass[countEqualList] += Integer.parseInt(incomeMass[j][1]);
+                //список категорий
+                for (int i = 0; i < incomeList.size() / 2; i++){
+                    for(int j = 0; j < 1; j++){
+                        if(!equalList.contains(incomeMass[i][j])){
+                            equalList.add(incomeMass[i][j]);
+                        }
                     }
                 }
+                //создание массива денег
+                int[] moneyMass = new int[equalList.size()];
+                for (int countEqualList = 0; countEqualList < equalList.size(); countEqualList++){
+                    for (int j = 0; j < incomeList.size() / 2; j++){
+                        if(incomeMass[j][0].equals(equalList.get(countEqualList))){
+                            moneyMass[countEqualList] += Integer.parseInt(incomeMass[j][1]);
+                        }
+                    }
+                }
+                //заполнение массива для построения графика
+                String[][] graphicMass = new String[equalList.size()][2];
+                for (int i = 0; i < equalList.size(); i++){
+                    graphicMass[i][0] = equalList.get(i);
+                    graphicMass[i][1] = String.valueOf(moneyMass[i]);
+                }
+                return graphicMass;
             }
-            //заполнение массива для построения графика
-            String[][] graphicMass = new String[equalList.size()][2];
-            for (int i = 0; i < equalList.size(); i++){
-                graphicMass[i][0] = equalList.get(i);
-                graphicMass[i][1] = String.valueOf(moneyMass[i]);
-            }
-            return graphicMass;
+            cursor.close();
+            database.close();
         }
-
-        cursor.close();
-        database.close();
-
+        else if(startDateIncome == 0 && endDateIncome == 0 || (startDateIncome == 0 || endDateIncome == 0)){
+            Toast toast = Toast.makeText(getActivity().getApplicationContext(),
+                    "Ошибка ввода даты"+"\n"
+                            +"Дату необходимо записать в формате: День.Месяц.Год(dd.mm.yyyy)",
+                    Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER, 100, 100);
+            toast.show();
+        }
+        else if(startDateIncome > endDateIncome){
+            Toast toast = Toast.makeText(getActivity().getApplicationContext(),
+                    "Ошибка диапазона дат:"+"\n"
+                            +"Дата начала периода должна быть раньше, чем дата завершения, либо равна ей",
+                    Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER, 100, 100);
+            toast.show();
+        }
         return graphicMassNull;
     }
-
     /**Метод для построения диаграммы расходов
      */
     public void ChartCreationExpenses(){
@@ -236,54 +254,71 @@ public class GraphicAnalysisFragment extends Fragment implements View.OnClickLis
         int endDateIncome = DateConverter.ConvertToJulian(String.valueOf(etEndDate.getText()));
         String[][] graphicMassNull = new String[1][1];
         graphicMassNull[0][0] = "null";
-
-        cursor = database.rawQuery(
-                "SELECT " + dbHelper.KEY_MONEY + ", "+dbHelper.KEY_CATEGORY+"  FROM  "+dbHelper.TABLE_EXPENSES+"  WHERE "+dbHelper.KEY_DATE+" BETWEEN "+startDateIncome+" AND  "+endDateIncome+" ", null);
-        if(cursor.moveToFirst()){
-            int categoryIndex = cursor.getColumnIndex(DBHelper.KEY_CATEGORY);
-            int moneyIndex = cursor.getColumnIndex(DBHelper.KEY_MONEY);
-            do {
-                incomeList.add(cursor.getString(categoryIndex));
-                incomeList.add(String.valueOf(cursor.getInt(moneyIndex)));
-            }
-            while (cursor.moveToNext());
-        }
-        String[][] incomeMass = new String[incomeList.size() / 2][2];
-        if(incomeList.size() > 0){
-            //создание массива из таблицы дохода
-            for (int i = 0; i < incomeList.size() / 2; i++){
-                for(int j = 0; j < 2; j++){
-                    incomeMass[i][j] = incomeList.get(listCount);
-                    listCount++;
+        if(startDateIncome != 0 && endDateIncome != 0 && startDateIncome <= endDateIncome){
+            cursor = database.rawQuery(
+                    "SELECT " + dbHelper.KEY_MONEY + ", "+dbHelper.KEY_CATEGORY+"  FROM  "+dbHelper.TABLE_EXPENSES+"  WHERE "+dbHelper.KEY_DATE+" BETWEEN "+startDateIncome+" AND  "+endDateIncome+" ", null);
+            if(cursor.moveToFirst()){
+                int categoryIndex = cursor.getColumnIndex(DBHelper.KEY_CATEGORY);
+                int moneyIndex = cursor.getColumnIndex(DBHelper.KEY_MONEY);
+                do {
+                    incomeList.add(cursor.getString(categoryIndex));
+                    incomeList.add(String.valueOf(cursor.getInt(moneyIndex)));
                 }
+                while (cursor.moveToNext());
             }
-            //список категорий
-            for (int i = 0; i < incomeList.size() / 2; i++){
-                for(int j = 0; j < 1; j++){
-                    if(!equalList.contains(incomeMass[i][j])){
-                        equalList.add(incomeMass[i][j]);
+            String[][] incomeMass = new String[incomeList.size() / 2][2];
+            if(incomeList.size() > 0){
+                //создание массива из таблицы расходов
+                for (int i = 0; i < incomeList.size() / 2; i++){
+                    for(int j = 0; j < 2; j++){
+                        incomeMass[i][j] = incomeList.get(listCount);
+                        listCount++;
                     }
                 }
-            }
-            //создание массива денег
-            int[] moneyMass = new int[equalList.size()];
-            for (int countEqualList = 0; countEqualList < equalList.size(); countEqualList++){
-                for (int j = 0; j < incomeList.size() / 2; j++){
-                    if(incomeMass[j][0].equals(equalList.get(countEqualList))){
-                        moneyMass[countEqualList] += Integer.parseInt(incomeMass[j][1]);
+                //список категорий
+                for (int i = 0; i < incomeList.size() / 2; i++){
+                    for(int j = 0; j < 1; j++){
+                        if(!equalList.contains(incomeMass[i][j])){
+                            equalList.add(incomeMass[i][j]);
+                        }
                     }
                 }
+                //создание массива денег
+                int[] moneyMass = new int[equalList.size()];
+                for (int countEqualList = 0; countEqualList < equalList.size(); countEqualList++){
+                    for (int j = 0; j < incomeList.size() / 2; j++){
+                        if(incomeMass[j][0].equals(equalList.get(countEqualList))){
+                            moneyMass[countEqualList] += Integer.parseInt(incomeMass[j][1]);
+                        }
+                    }
+                }
+                //заполнение массива для построения графика
+                String[][] graphicMass = new String[equalList.size()][2];
+                for (int i = 0; i < equalList.size(); i++){
+                    graphicMass[i][0] = equalList.get(i);
+                    graphicMass[i][1] = String.valueOf(moneyMass[i]);
+                }
+                return graphicMass;
             }
-            //заполнение массива для построения графика
-            String[][] graphicMass = new String[equalList.size()][2];
-            for (int i = 0; i < equalList.size(); i++){
-                graphicMass[i][0] = equalList.get(i);
-                graphicMass[i][1] = String.valueOf(moneyMass[i]);
-            }
-            return graphicMass;
+            cursor.close();
+            database.close();
         }
-        cursor.close();
-        database.close();
+        else if(startDateIncome == 0 && endDateIncome == 0 || (startDateIncome == 0 || endDateIncome == 0)){
+            Toast toast = Toast.makeText(getActivity().getApplicationContext(),
+                    "Ошибка ввода даты"+"\n"
+                            +"Дату необходимо записать в формате: День.Месяц.Год(dd.mm.yyyy)",
+                    Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER, 100, 100);
+            toast.show();
+        }
+        else if(startDateIncome > endDateIncome){
+            Toast toast = Toast.makeText(getActivity().getApplicationContext(),
+                    "Ошибка диапазона дат:"+"\n"
+                    +"Дата начала периода должна быть раньше, чем дата завершения, либо равна ей",
+                    Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER, 100, 100);
+            toast.show();
+        }
         return graphicMassNull;
     }
 

@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DateConverter {
+    static String dateTemplate = "^(0?[1-9]|[12][0-9]|3[01]).(0?[1-9]|1[012]).([12][0-9]{3})$";
     /**Метод для преобразования Григорианской даты в Юлианскую
      * @param unformattedDate - Григорианская дата
      * @return Юлианская дата в целочисленном формате
@@ -13,8 +14,7 @@ public class DateConverter {
     public static int ConvertToJulian(String unformattedDate)
     {
         int resultJulian = 0;
-        if(unformattedDate.length() > 0)
-        {
+        if(unformattedDate.matches(dateTemplate) && unformattedDate.length() == 10){
             int[] monthValues = {31,28,31,30,31,30,31,31,30,31,30,31};
 
             String dayS, monthS, yearS;
@@ -52,11 +52,13 @@ public class DateConverter {
 
             julianDate += String.valueOf(julianDays);
             resultJulian =  Integer.valueOf(julianDate);
-
+            return resultJulian;
         }
-        return resultJulian;
+        else{
+            return 0;
+        }
     }
-    /**Метод для преобразования Григорианской даты в Юлианскую
+    /**Метод для преобразования Юлианской даты в Григорианскую
      * @param julian - Юлианская дата
      * @return Григорианская дата в формате строки
      */

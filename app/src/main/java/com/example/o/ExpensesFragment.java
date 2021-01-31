@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -285,6 +287,14 @@ public class ExpensesFragment extends Fragment implements View.OnClickListener{
                     tvMoney.setText(GetValueMoney());
                     tvInputField.setText("");
                     etCategory.setText("");
+                }
+                else if(tvInputField.length() == 0){
+                    Toast toast = Toast.makeText(getActivity().getApplicationContext(),
+                            "Ошибка ввода суммы расходов:"+"\n"
+                                    +"Введите сумму расходов",
+                            Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER, 100, 100);
+                    toast.show();
                 }
                 break;
         }
